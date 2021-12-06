@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { getResponse } from '../lib/getResponse';
-import { editService } from './serviceList';
+// import { getResponse } from '../lib/getResponse';
+// import { editService } from './serviceList';
 
 const initialState = {
   service: {
@@ -14,24 +14,24 @@ const initialState = {
   error: null,
 };
 
-export const editServiceAsync = createAsyncThunk(
-  'editService/fetchEditService',
-  async ({ service, history }, { dispatch, rejectWithValue }) => {
-    try {
-      const data = await getResponse({
-        url: `${process.env.REACT_APP_API_SERVICES}/${service.id}?fortune`,
-        method: 'PUT',
-        data: service,
-      });
-      dispatch(editService(data));
-      dispatch(resetEditForm());
-      history.push(process.env.REACT_APP_HOMEPAGE);
-      return data;
-    } catch (e) {
-      return rejectWithValue(e.message);
-    }
-  },
-);
+// export const editServiceAsync = createAsyncThunk(
+//   'editService/fetchEditService',
+//   async ({ service, history }, { dispatch, rejectWithValue }) => {
+//     try {
+//       const data = await getResponse({
+//         url: `${process.env.REACT_APP_API_SERVICES}/${service.id}?fortune`,
+//         method: 'PUT',
+//         data: service,
+//       });
+//       dispatch(editService(data));
+//       dispatch(resetEditForm());
+//       history.push(process.env.REACT_APP_HOMEPAGE);
+//       return data;
+//     } catch (e) {
+//       return rejectWithValue(e.message);
+//     }
+//   },
+// );
 
 export const editServiceSlice = createSlice({
   name: 'editService',

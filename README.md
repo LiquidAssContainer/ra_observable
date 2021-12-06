@@ -1,11 +1,13 @@
-<!-- [![Build status](https://ci.appveyor.com/api/projects/status/mtbt46ped9pa7vho?svg=true)](https://ci.appveyor.com/project/LiquidAssContainer/ra-thunk-2)
+[![Build status](https://ci.appveyor.com/api/projects/status/xjclbmwo4k46ty2q?svg=true)](https://ci.appveyor.com/project/LiquidAssContainer/ra-observable)
 
-# ~~Redux Thunk 2~~ Redux Toolkit
+# Redux Observable
 
-[GitHub Pages](https://liquidasscontainer.github.io/ra_thunk-2).
+[GitHub Pages](https://liquidasscontainer.github.io/ra_observable).
 
-[Репозиторий с первой задачей](https://github.com/LiquidAssContainer/ra_thunk).
+За основу взята предыдущая домашняя работа, сделанная на Redux Toolkit. Поскольку чистый Redux мне не очень нравится, я решил переписать часть кода прошлого проекта (написанного на Toolkit), но пришлось «подружить» Tookit и Observable. Наверное, не самая рациональная идея (всё же проще использовать встроенный в Toolkit `createAsyncThunk`), но задачей было использовать Redux Observable.
 
-~~Доработанная первая задача: есть мелкие исправления в коде и функционале, а также добавлен Redux Thunk (основное требование)~~. Переписано с обычного Redux на Redux Toolkit. Вместо Thunk теперь используется тулкитовский `createAsyncThunk`. Есть нормальный роутинг с использованием `HashRouter`.
+Загрузка списка услуг, поиск и подгрузка описания у конкретной услуги сделаны с использованием epic’ов. Остальные функции, которые не требовались в этом задании, могут быть убраны или не работать. Могут быть невостребованные куски кода на тулкитовских thunk’ах и т. п.
 
-Спиннер взят [отсюда](https://codepen.io/supah/pen/BjYLdW). -->
+Со стороны сервера была добавлена вероятность возниковения ошибки при запросе (если есть query-параметр `fortune`), присутствует кнопка повторения запроса.
+
+Спиннер взят [отсюда](https://codepen.io/supah/pen/BjYLdW).

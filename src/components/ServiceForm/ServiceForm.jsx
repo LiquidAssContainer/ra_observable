@@ -11,7 +11,7 @@ export const ServiceForm = ({
 
   const onSubmit = (e) => {
     e.preventDefault();
-    onFormSubmit(formData);
+    // onFormSubmit(formData);
   };
 
   return (
