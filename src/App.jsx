@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   HashRouter as Router,
@@ -14,45 +14,35 @@ import { ServiceList } from './components/ServiceList/ServiceList';
 import { LoadingSpinner } from './components/ServiceList/LoadingSpinner';
 import { ErrorPopup } from './components/ServiceList/ErrorPopup';
 
-import { getServicesAsync } from './reducers/serviceList';
+import { getServicesRequest } from './reducers/serviceList';
 
 import './styles/app.css';
 
 export const App = () => {
   const dispatch = useDispatch();
+
   const { services, loading, error } = useSelector(
     (state) => state.serviceList,
   );
+  const { foundServices } = useSelector((state) => state.searchServices);
 
-  const [filtered, setFiltered] = useState('');
-
-  const filterByString = (string, services) => {
-    return string
-      ? services.filter((service) =>
-          service.name.toLowerCase().includes(string.toLowerCase()),
-        )
-      : null;
-  };
-
-  const onFilter = (string) => {
-    const filteredServices = filterByString(string, services);
-    setFiltered(filteredServices);
+  const onRetry = () => {
+    dispatch(getServicesRequest());
   };
 
   useEffect(() => {
-    dispatch(getServicesAsync());
+    dispatch(getServicesRequest());
   }, [dispatch]);
 
   return (
     <Router>
       <Route exact path={['/']}>
-        {/*HOMEPAGE добавил из-за нюанса на GitHub Pages, такое вот костыльное решение*/}
         <Redirect to={process.env.REACT_APP_HOMEPAGE} />
       </Route>
       {loading ? (
         <LoadingSpinner radius="20" width="5" color="rgb(210, 70, 75)" />
       ) : error ? (
-        <ErrorPopup message={error} />
+        <ErrorPopup message={error} onRetry={onRetry} />
       ) : (
         <div className="services-app">
           <Link
@@ -61,8 +51,8 @@ export const App = () => {
           >
             <button className="add-service_btn">Add new service</button>
           </Link>
-          <FilterServices onFilter={onFilter} />
-          <ServiceList services={filtered || services} />
+          <FilterServices />
+          <ServiceList services={foundServices || services} />
           <Switch>
             <Route
               path={`${process.env.REACT_APP_HOMEPAGE}/add`}

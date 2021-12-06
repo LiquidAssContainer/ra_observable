@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+
 import { getResponse } from '../lib/getResponse';
 import { editService } from './serviceList';
 
@@ -13,26 +14,12 @@ const initialState = {
   error: null,
 };
 
-export const getServiceAsync = createAsyncThunk(
-  'editService/fetchFullService',
-  async (id, { rejectWithValue }) => {
-    try {
-      const data = await getResponse({
-        url: `${process.env.REACT_APP_API_SERVICES}/${id}`,
-      });
-      return data;
-    } catch (e) {
-      return rejectWithValue(e.message);
-    }
-  },
-);
-
 export const editServiceAsync = createAsyncThunk(
   'editService/fetchEditService',
   async ({ service, history }, { dispatch, rejectWithValue }) => {
     try {
       const data = await getResponse({
-        url: `${process.env.REACT_APP_API_SERVICES}/${service.id}`,
+        url: `${process.env.REACT_APP_API_SERVICES}/${service.id}?fortune`,
         method: 'PUT',
         data: service,
       });
@@ -50,8 +37,18 @@ export const editServiceSlice = createSlice({
   name: 'editService',
   initialState,
   reducers: {
-    getService: (state, { payload }) => {
+    getServiceRequest: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    getServiceSuccess: (state, { payload }) => {
       state.service = payload;
+      state.loading = false;
+      state.error = null;
+    },
+    getServiceFailure: (state, { payload }) => {
+      state.error = payload;
+      state.loading = false;
     },
     changeEditServiceField: (state, { payload }) => {
       const { name, value } = payload;
@@ -63,27 +60,14 @@ export const editServiceSlice = createSlice({
       state.error = null;
     },
   },
-  extraReducers: {
-    [getServiceAsync.fulfilled]: (state, { payload }) => {
-      state.service = payload;
-    },
-    [editServiceAsync.pending]: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    [editServiceAsync.fulfilled]: (state) => {
-      state.service = initialState.service;
-      state.loading = false;
-      state.error = null;
-    },
-    [editServiceAsync.rejected]: (state, { payload }) => {
-      state.error = payload;
-      state.loading = false;
-    },
-  },
 });
 
-export const { getService, changeEditServiceField, resetEditForm } =
-  editServiceSlice.actions;
+export const {
+  getServiceRequest,
+  getServiceSuccess,
+  getServiceFailure,
+  changeEditServiceField,
+  resetEditForm,
+} = editServiceSlice.actions;
 
 export const editServiceReducer = editServiceSlice.reducer;

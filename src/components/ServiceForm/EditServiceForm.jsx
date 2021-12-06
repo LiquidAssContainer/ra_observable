@@ -8,7 +8,7 @@ import { ErrorPopup } from '../ServiceList/ErrorPopup';
 import {
   changeEditServiceField,
   editServiceAsync,
-  getServiceAsync,
+  getServiceRequest,
 } from '../../reducers/editService';
 
 export const EditServiceForm = ({ id }) => {
@@ -31,8 +31,12 @@ export const EditServiceForm = ({ id }) => {
     }
   };
 
+  const onRetry = () => {
+    dispatch(getServiceRequest(id));
+  };
+
   useEffect(() => {
-    dispatch(getServiceAsync(id));
+    dispatch(getServiceRequest(id));
   }, []);
 
   return (
@@ -43,7 +47,7 @@ export const EditServiceForm = ({ id }) => {
         onFormSubmit={onFormSubmit}
         isLoading={loading}
       />
-      {error && <ErrorPopup message={error} />}
+      {error && <ErrorPopup message={error} onRetry={onRetry} />}
     </>
   );
 };

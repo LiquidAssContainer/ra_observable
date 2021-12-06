@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeSearchField } from '../../reducers/searchServices';
 
-export const FilterServices = ({ onFilter }) => {
-  const [value, setValue] = useState('');
+export const FilterServices = () => {
+  const dispatch = useDispatch();
+
+  const { searchField } = useSelector((state) => state.searchServices);
 
   const onChange = ({ target: { value } }) => {
-    setValue(value);
-    onFilter(value);
+    dispatch(changeSearchField(value));
   };
 
   return (
@@ -16,7 +18,8 @@ export const FilterServices = ({ onFilter }) => {
           type="text"
           className="filter-services_input"
           onChange={onChange}
-          value={value}
+          value={searchField}
+          placeholder="Type something to search..."
         />
       </label>
     </div>

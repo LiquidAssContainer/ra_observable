@@ -1,37 +1,10 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getResponse } from '../lib/getResponse';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   services: [],
   loading: false,
   error: null,
 };
-
-export const getServicesAsync = createAsyncThunk(
-  'serviceList/fetchServices',
-  async (_, { rejectWithValue }) => {
-    try {
-      const data = await getResponse({
-        url: process.env.REACT_APP_API_SERVICES,
-      });
-      return data;
-    } catch (e) {
-      return rejectWithValue(e.message);
-    }
-  },
-);
-
-export const removeServiceAsync = createAsyncThunk(
-  'editService/fetchRemoveService',
-  async (id, { dispatch }) => {
-    try {
-      await fetch(`${process.env.REACT_APP_API_SERVICES}/${id}`, {
-        method: 'DELETE',
-      });
-      dispatch(removeService(id));
-    } catch {}
-  },
-);
 
 export const serviceListSlice = createSlice({
   name: 'serviceList',
@@ -42,7 +15,20 @@ export const serviceListSlice = createSlice({
       const newService = { id, name, price: Number(price), content };
       state.services.push(newService);
     },
-    removeService: (state, { payload }) => {
+    getServicesRequest: (state, { payload }) => {
+      state.loading = true;
+      state.error = null;
+    },
+    getServicesSuccess: (state, { payload }) => {
+      state.services = payload;
+      state.loading = false;
+      state.error = null;
+    },
+    getServicesFailure: (state, { payload }) => {
+      state.error = payload;
+      state.loading = false;
+    },
+    removeServiceSuccess: (state, { payload }) => {
       state.services = state.services.filter(
         (service) => service.id !== payload,
       );
@@ -54,24 +40,15 @@ export const serviceListSlice = createSlice({
       state.services[serviceIndex] = payload;
     },
   },
-  extraReducers: {
-    [getServicesAsync.pending]: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    [getServicesAsync.fulfilled]: (state, { payload }) => {
-      state.services = payload;
-      state.loading = false;
-      state.error = null;
-    },
-    [getServicesAsync.rejected]: (state, { payload }) => {
-      state.error = payload;
-      state.loading = false;
-    },
-  },
 });
 
-export const { addService, removeService, editService } =
-  serviceListSlice.actions;
+export const {
+  addService,
+  editService,
+  getServicesSuccess,
+  getServicesRequest,
+  getServicesFailure,
+  removeServiceSuccess,
+} = serviceListSlice.actions;
 
 export const serviceListReducer = serviceListSlice.reducer;

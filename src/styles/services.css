@@ -110,6 +110,10 @@
   margin-top: 10px;
 }
 
+.retry-btn {
+  margin-left: 25px;
+}
+
 .form_container {
   position: relative;
 }
