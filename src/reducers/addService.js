@@ -14,24 +14,24 @@ const initialState = {
   error: null,
 };
 
-// export const addServiceAsync = createAsyncThunk(
-//   'addService/fetchAddService',
-//   async ({ service, history }, { dispatch, rejectWithValue }) => {
-//     try {
-//       const data = await getResponse({
-//         url: `${process.env.REACT_APP_API_SERVICES}`,
-//         method: 'POST',
-//         data: service,
-//       });
-//       dispatch(addService(data));
-//       dispatch(resetEditForm());
-//       history.push(process.env.REACT_APP_HOMEPAGE);
-//       return data;
-//     } catch (e) {
-//       return rejectWithValue(e.message);
-//     }
-//   },
-// );
+export const addServiceAsync = createAsyncThunk(
+  'addService/fetchAddService',
+  async ({ service, history }, { dispatch, rejectWithValue }) => {
+    try {
+      const data = await getResponse({
+        url: `${process.env.REACT_APP_API_SERVICES}`,
+        method: 'POST',
+        data: service,
+      });
+      dispatch(addService(data));
+      dispatch(resetEditForm());
+      history.push(process.env.REACT_APP_HOMEPAGE);
+      return data;
+    } catch (e) {
+      return rejectWithValue(e.message);
+    }
+  },
+);
 
 export const addServiceSlice = createSlice({
   name: 'addService',
