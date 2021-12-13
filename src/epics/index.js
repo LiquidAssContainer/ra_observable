@@ -73,7 +73,7 @@ export const searchServicesEpic = (action$) =>
     map((o) => new URLSearchParams({ q: o })),
     switchMap((o) =>
       ajax
-        .getJSON(`${process.env.REACT_APP_API_SEARCH}?${o}`)
+        .getJSON(`${process.env.REACT_APP_SEARCH_URL}?${o}`)
         .pipe(map((o) => searchServicesSuccess(o))),
     ),
   );

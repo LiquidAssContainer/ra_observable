@@ -18,7 +18,7 @@ export const searchServicesSlice = createSlice({
       }
       state.searchField = payload;
     },
-    searchServicesRequest: (state, { payload }) => {
+    searchServicesRequest: () => {
       // nothing
     },
     searchServicesSuccess: (state, { payload }) => {
